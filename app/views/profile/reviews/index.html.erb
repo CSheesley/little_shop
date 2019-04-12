@@ -4,8 +4,8 @@
 
 <section id="my-reviews-<%= review.id %>">
 
-  <h4>Title: <%= review.title %></h4>
-  <p>Item Name: <%= review.item_reviewed.name %></p>
+  <h4> <%= review.item_reviewed.name %> </h4>
+  <p>Review Title: <%= review.title %></p>
   <p>Rating: <%= review.rating %></p>
   <p>Description: <%= review.description %></p>
   <p>Created/Updated: <%= review.updated_at.strftime("%m/%d/%y") %></p>
