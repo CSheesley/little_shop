@@ -22,9 +22,10 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
   context 'when I visit my reviews index page' do
     it 'shows a list of all of the reviews which I have written' do
-      binding.pry
+
       within "#my-reviews-#{@review_1.id}" do
         expect(page).to have_content("Title: #{@review_1.title}")
+        expect(page).to have_content("Item Name: #{@review_1.item_reviewed.name}")
         expect(page).to have_content("Rating: #{@review_1.rating}")
         expect(page).to have_content("Description: #{@review_1.description}")
         expect(page).to have_content("Created/Updated: #{@review_1.updated_at.strftime("%m/%d/%y")}")
@@ -32,6 +33,7 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
       within "#my-reviews-#{@review_2.id}" do
         expect(page).to have_content("Title: #{@review_2.title}")
+        expect(page).to have_content("Item Name: #{@review_2.item_reviewed.name}")
         expect(page).to have_content("Rating: #{@review_2.rating}")
         expect(page).to have_content("Description: #{@review_2.description}")
         expect(page).to have_content("Created/Updated: #{@review_2.updated_at.strftime("%m/%d/%y")}")

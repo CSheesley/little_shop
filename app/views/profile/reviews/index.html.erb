@@ -3,7 +3,9 @@
 <% @reviews.each do |review| %>
 
 <section id="my-reviews-<%= review.id %>">
-  <p>Title: <%= review.title %></p>
+
+  <h4>Title: <%= review.title %></h4>
+  <p>Item Name: <%= review.item_reviewed.name %></p>
   <p>Rating: <%= review.rating %></p>
   <p>Description: <%= review.description %></p>
   <p>Created/Updated: <%= review.updated_at.strftime("%m/%d/%y") %></p>
