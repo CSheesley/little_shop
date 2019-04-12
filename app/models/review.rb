@@ -6,4 +6,9 @@ class Review < ApplicationRecord
 
   belongs_to :user
   belongs_to :order_item
+
+
+  def item_reviewed
+    Item.find(order_item.item_id)
+  end
 end

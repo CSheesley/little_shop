@@ -7,8 +7,14 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
     @item_1 = create(:item)
     @item_2 = create(:item)
 
-    @review_1 = create(:review, user_id: @user.id)
-    @review_2 = create(:review, user_id: @user.id)
+    @order_1 = create(:order)
+    @order_2 = create(:order)
+
+    @order_item_1 = create(:order_item, order_id: @order_1.id, item_id: @item_1.id)
+    @order_item_2 = create(:order_item, order_id: @order_2.id, item_id: @item_2.id)
+
+    @review_1 = create(:review, user_id: @user.id, order_item_id: @order_item_1.id)
+    @review_2 = create(:review, user_id: @user.id, order_item_id: @order_item_2.id)
 
     login_as(@user)
     visit profile_reviews_path
@@ -16,7 +22,7 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
   context 'when I visit my reviews index page' do
     it 'shows a list of all of the reviews which I have written' do
-
+      binding.pry
       within "#my-reviews-#{@review_1.id}" do
         expect(page).to have_content("Title: #{@review_1.title}")
         expect(page).to have_content("Rating: #{@review_1.rating}")
