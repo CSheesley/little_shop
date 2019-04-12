@@ -20,9 +20,16 @@ class Profile::ReviewsController < ApplicationController
       flash[:update] = "Review for #{@review.title} has been updated!"
       redirect_to profile_reviews_path
     else
-      flash[:errors] = @review.erros.full_messages.join(", ")
+      flash[:errors] = @review.errors.full_messages.join(", ")
       render :edit
     end
+  end
+
+  def destroy
+    @review = current_review
+    @review.destroy
+    flash[:destroy] = "Review for #{@review.title} has been deleted!"
+    redirect_to profile_reviews_path
   end
 
   private

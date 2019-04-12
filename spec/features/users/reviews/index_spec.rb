@@ -7,8 +7,14 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
     @item_1 = create(:item)
     @item_2 = create(:item)
 
-    @review_1 = create(:review, user_id: @user.id)
-    @review_2 = create(:review, user_id: @user.id)
+    @order_1 = create(:order)
+    @order_2 = create(:order)
+
+    @order_item_1 = create(:order_item, order_id: @order_1.id, item_id: @item_1.id)
+    @order_item_2 = create(:order_item, order_id: @order_2.id, item_id: @item_2.id)
+
+    @review_1 = create(:review, user_id: @user.id, order_item_id: @order_item_1.id)
+    @review_2 = create(:review, user_id: @user.id, order_item_id: @order_item_2.id)
 
     login_as(@user)
     visit profile_reviews_path
@@ -18,14 +24,16 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
     it 'shows a list of all of the reviews which I have written' do
 
       within "#my-reviews-#{@review_1.id}" do
-        expect(page).to have_content("Title: #{@review_1.title}")
+        expect(page).to have_content("#{@review_1.item_reviewed.name}")
+        expect(page).to have_content("Review Title: #{@review_1.title}")
         expect(page).to have_content("Rating: #{@review_1.rating}")
         expect(page).to have_content("Description: #{@review_1.description}")
         expect(page).to have_content("Created/Updated: #{@review_1.updated_at.strftime("%m/%d/%y")}")
       end
 
       within "#my-reviews-#{@review_2.id}" do
-        expect(page).to have_content("Title: #{@review_2.title}")
+        expect(page).to have_content("#{@review_2.item_reviewed.name}")
+        expect(page).to have_content("Review Title: #{@review_2.title}")
         expect(page).to have_content("Rating: #{@review_2.rating}")
         expect(page).to have_content("Description: #{@review_2.description}")
         expect(page).to have_content("Created/Updated: #{@review_2.updated_at.strftime("%m/%d/%y")}")
@@ -73,7 +81,7 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
         expect(current_path).to eq(profile_reviews_path)
         expect(page).to have_content("Review for #{@review_1.title} has been updated!")
-        
+
         within "#my-reviews-#{@review_1.id}" do
           expect(page).to have_content("Title: Item Broke")
           expect(page).to have_content("Rating: 1")
@@ -83,8 +91,21 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
     end
 
     context 'when I click on the Delete button next to a review' do
-      xit 'I am notified that the review has been deleted, and I no longer see this review on my reviews page' do
+      it 'I am notified that the review has been deleted, and I no longer see this review on my reviews page' do
 
+        expect(@user.reviews).to eq([@review_1, @review_2])
+
+        within "#my-reviews-#{@review_1.id}" do
+          click_on "Delete"
+        end
+
+        expect(current_path).to eq(profile_reviews_path)
+        expect(page).to have_content("Review for #{@review_1.title} has been deleted!")
+        expect(page).to_not have_selector('div', id: "my-reviews-#{@review_1.id}")
+
+        @user.reviews.reload
+
+        expect(@user.reviews).to eq([@review_2])
       end
     end
   end
