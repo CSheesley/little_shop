@@ -1,1 +1,10 @@
-<h1>My Reviews</h1>
+<h1>My Reviews</h1></br>
+
+<% @reviews.each do |review| %>
+
+<section id="my-reviews-<%= review.id %>">
+  <p>Title: <%= review.title %></p>
+  <p>Description: <%= review.description %></p>
+  <p>Created/Updated: <%= review.updated_at.strftime("%m/%d/%y") %></p></br>
+</section>
+<% end %>

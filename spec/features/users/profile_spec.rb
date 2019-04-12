@@ -135,7 +135,7 @@ RSpec.describe 'user profile', type: :feature do
     it 'shows a link to an index page of all reviews that the user has made' do
       login_as(@user)
       visit profile_path
-      save_and_open_page
+      
       click_on "My Reviews"
 
       expect(current_path).to eq(profile_reviews_path)
