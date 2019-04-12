@@ -73,7 +73,7 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
         expect(current_path).to eq(profile_reviews_path)
         expect(page).to have_content("Review for #{@review_1.title} has been updated!")
-        
+
         within "#my-reviews-#{@review_1.id}" do
           expect(page).to have_content("Title: Item Broke")
           expect(page).to have_content("Rating: 1")
@@ -83,8 +83,21 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
     end
 
     context 'when I click on the Delete button next to a review' do
-      xit 'I am notified that the review has been deleted, and I no longer see this review on my reviews page' do
+      it 'I am notified that the review has been deleted, and I no longer see this review on my reviews page' do
 
+        expect(@user.reviews).to eq([@review_1, @review_2])
+
+        within "#my-reviews-#{@review_1.id}" do
+          click_on "Delete"
+        end
+
+        expect(current_path).to eq(profile_reviews_path)
+        expect(page).to have_content("Review for #{@review_1.title} has been deleted!")
+        expect(page).to_not have_selector('div', id: "my-reviews-#{@review_1.id}")
+
+        @user.reviews.reload
+
+        expect(@user.reviews).to eq([@review_2])
       end
     end
   end
