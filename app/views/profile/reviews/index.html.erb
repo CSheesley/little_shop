@@ -1,1 +1,13 @@
-<h1>My Reviews</h1>
+<h1>My Reviews</h1></br>
+
+<% @reviews.each do |review| %>
+
+<section id="my-reviews-<%= review.id %>">
+  <p>Title: <%= review.title %></p>
+  <p>Rating: <%= review.rating %></p>
+  <p>Description: <%= review.description %></p>
+  <p>Created/Updated: <%= review.updated_at.strftime("%m/%d/%y") %></p>
+  <p><%= link_to "Edit", edit_profile_review_path(review) %> - <%= link_to "Delete", profile_review_path(review), method: :delete %></p>
+
+</section>
+<% end %>

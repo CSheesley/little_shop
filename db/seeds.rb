@@ -7,6 +7,14 @@ include FactoryBot::Syntax::Methods
 Item.destroy_all
 User.destroy_all
 
+corey = create(:user, name: "Corey", email: "corey@email.com", password: "password")
+item_101 = create(:item)
+item_201 = create(:item)
+
+review_101 = create(:review, user_id: corey.id)
+review_201 = create(:review, user_id: corey.id)
+
+
 admin = create(:admin)
 user = create(:user)
 merchant_1 = create(:merchant)
@@ -24,6 +32,10 @@ create_list(:item, 10, user: merchant_1)
 
 inactive_item_1 = create(:inactive_item, user: merchant_1)
 inactive_item_2 = create(:inactive_item, user: inactive_merchant_1)
+
+
+
+
 
 # Random.new_seed
 # rng = Random.new
