@@ -73,7 +73,7 @@ RSpec.describe 'Profiles Reviews Index Page', type: :feature do
 
         expect(current_path).to eq(profile_reviews_path)
         expect(page).to have_content("Review for #{@review_1.title} has been updated!")
-
+        
         within "#my-reviews-#{@review_1.id}" do
           expect(page).to have_content("Title: Item Broke")
           expect(page).to have_content("Rating: 1")
