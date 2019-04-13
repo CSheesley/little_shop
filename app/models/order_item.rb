@@ -1,7 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :item
-  has_many :reviews
+  has_one :review
 
   validates :price, presence: true, numericality: {
     only_integer: false,
@@ -30,8 +30,6 @@ class OrderItem < ApplicationRecord
   end
 
   def reviewable?
-    # order is complete - self.order.status
-    # user = self.order.user
-    # user has not reviewed this order item yet - self.reviews.where(user_id: user.id)nil?
+    order.status == "shipped" && review.nil?
   end
 end

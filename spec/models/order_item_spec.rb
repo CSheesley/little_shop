@@ -12,7 +12,7 @@ RSpec.describe OrderItem, type: :model do
   describe 'relationships' do
     it { should belong_to :order }
     it { should belong_to :item }
-    it { should have_many :reviews }
+    it { should have_one :review }
   end
 
   describe 'instance methods' do
@@ -58,6 +58,40 @@ RSpec.describe OrderItem, type: :model do
       expect(oi1.inventory_available).to eq(true)
       expect(oi2.inventory_available).to eq(true)
       expect(oi3.inventory_available).to eq(false)
+    end
+
+    context '#reviewable?' do
+      it 'returns a boolean determining if the order_item is reviewable' do
+
+        @user = create(:user)
+        @item_1 = create(:item)
+        @item_2 = create(:item)
+        @item_3 = create(:item)
+        @item_4 = create(:item)
+
+        @order_1 = create(:shipped_order, user_id: @user.id)
+        @order_item_101 = create(:order_item, order_id: @order_1.id, item_id: @item_1.id, fulfilled: true)
+        @order_item_102 = create(:order_item, order_id: @order_1.id, item_id: @item_2.id, fulfilled: true)
+
+        @order_2 = create(:shipped_order, user_id: @user.id)
+        @order_item_201 = create(:order_item, order_id: @order_2.id, item_id: @item_2.id, fulfilled: true)
+        @order_item_202 = create(:order_item, order_id: @order_2.id, item_id: @item_3.id, fulfilled: true)
+
+        @order_3 = create(:order, user_id: @user.id)
+        @order_item_301 = create(:order_item, order_id: @order_3.id, item_id: @item_3.id, fulfilled: true)
+        @order_item_302 = create(:order_item, order_id: @order_3.id, item_id: @item_4.id, fulfilled: false)
+
+        @review_202 = create(:review, user_id: @user.id, order_item_id: @order_item_202.id)
+
+        expect(@order_item_101.reviewable?).to eq(true)
+        expect(@order_item_102.reviewable?).to eq(true)
+
+        expect(@order_item_201.reviewable?).to eq(true)
+        expect(@order_item_202.reviewable?).to eq(false) # already reviewed
+
+        expect(@order_item_301.reviewable?).to eq(false) # order not shipped
+        expect(@order_item_302.reviewable?).to eq(false) # order not shipped
+      end
     end
   end
 end
