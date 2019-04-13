@@ -17,7 +17,6 @@ class Profile::ReviewsController < ApplicationController
       redirect_to profile_order_path(@review.order_item.order_id)
     else
       flash[:errors] = @review.errors.full_messages.join(", ")
-      # @order_item_id = params[:oitem_id]
       render :new
     end
   end
