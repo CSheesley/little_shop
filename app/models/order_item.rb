@@ -1,7 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :item
-  has_many :reviews
+  has_one :review
 
   validates :price, presence: true, numericality: {
     only_integer: false,
