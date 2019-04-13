@@ -10,12 +10,14 @@ class Profile::ReviewsController < ApplicationController
   end
 
   def create
+    @order_item_id = params[:oitem_id]
     @review = current_user.reviews.new(new_params)
     if @review.save
       flash[:new] = "Your review for #{@review.item_reviewed.name} has been created!"
       redirect_to profile_order_path(@review.order_item.order_id)
     else
       flash[:errors] = @review.errors.full_messages.join(", ")
+      # @order_item_id = params[:oitem_id]
       render :new
     end
   end

@@ -75,8 +75,8 @@ RSpec.describe 'New Item Review', type: :feature do
       end
     end
 
-    context 'when I click the review link on an order_item' do
-      it 'shows a form to fill out and submit, I receive a confirmation message, I am then redirected back to the order show page' do
+    context 'when I click the review link on an order_item, and submit valid info in the form' do
+      it 'I receive a confirmation message, I am then redirected back to the order show page' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
         visit profile_order_path(@order_1)
@@ -98,6 +98,31 @@ RSpec.describe 'New Item Review', type: :feature do
         within "#oitem-#{@order_item_101.id}" do
           expect(page).to_not have_content("Review")
         end
+      end
+    end
+
+    context 'when I click the review link on an order_item, and submit invalid info in the form' do
+      it 'I receive a message notifying me what I did wrong, I am redirected back to the new review form, with my previous info pre-populated' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+        visit profile_order_path(@order_1)
+
+        within "#oitem-#{@order_item_101.id}" do
+          click_on "Review"
+          expect(current_path).to eq(new_profile_review_path)
+        end
+
+        fill_in "Rating", with: 10
+
+        click_on "Create Review"
+
+        expect(page).to have_content("Title can't be blank")
+        expect(page).to have_content("Rating must be 1 through 5")
+        expect(page).to have_content("Description can't be blank")
+
+        expect(current_path).to eq(profile_reviews_path)
+
+        expect(find_field("Rating").value).to eq("10")
       end
     end
   end
