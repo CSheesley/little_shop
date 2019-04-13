@@ -30,7 +30,7 @@
       <% end %>
 
       <% if item.average_rating %>
-        <p>Average Review: <%= item.average_rating %></p>
+        <p>Average Rating: <%= item.average_rating.round(2) %></p>
       <% else %>
         <p>No Reviews Yet</p>
       <% end %>
