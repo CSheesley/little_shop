@@ -31,5 +31,24 @@ RSpec.describe Review, type: :model do
         expect(@review_2.item_reviewed).to eq(@item_2)
       end
     end
+
+    context '#updated?' do
+      it 'returns a boolean of whether or not the review has been updated' do
+
+        @user = create(:user)
+        @item_1 = create(:item)
+        @order_1 = create(:order)
+        @order_item_1 = create(:order_item, order_id: @order_1.id, item_id: @item_1.id)
+        @review_1 = create(:review, user_id: @user.id, order_item_id: @order_item_1.id, created_at: 3.days.ago, updated_at: 1.days.ago)
+
+        @item_2 = create(:item)
+        @order_2 = create(:order)
+        @order_item_2 = create(:order_item, order_id: @order_2.id, item_id: @item_2.id)
+        @review_2 = create(:review, user_id: @user.id, order_item_id: @order_item_2.id)
+      
+        expect(@review_1.updated?).to eq(true)
+        expect(@review_2.updated?).to eq(false)
+      end
+    end
   end
 end

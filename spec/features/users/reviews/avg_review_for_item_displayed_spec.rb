@@ -48,22 +48,27 @@ RSpec.describe 'Average Item Rating', type: :feature do
   end
 
   context 'when visiting an item show page' do
-    it 'shows the average rating for that item' do
+    it 'shows the average rating, and number of ratings for that item' do
       visit item_path(@item_1)
+      expect(@item_1.number_of_reviews).to eq(2)
 
       within "#item" do
         expect(page).to have_content("Average Rating: #{@item_1.average_rating}")
+        expect(page).to have_content("Number of Reviews: #{@item_1.number_of_reviews}")
       end
 
       visit item_path(@item_2)
+      expect(@item_2.number_of_reviews).to eq(2)
 
       within "#item" do
         expect(page).to have_content("Average Rating: #{@item_2.average_rating}")
+        expect(page).to have_content("Number of Reviews: #{@item_2.number_of_reviews}")
       end
     end
 
     it 'does not show a rating for an item which has not yet been reviewed' do
       visit item_path(@item_3)
+      expect(@item_3.number_of_reviews).to eq(0)
 
       within "#item" do
         expect(page).to have_content("No Reviews Yet")

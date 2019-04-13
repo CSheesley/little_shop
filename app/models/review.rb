@@ -10,4 +10,8 @@ class Review < ApplicationRecord
   def item_reviewed
     Item.find(order_item.item_id)
   end
+
+  def updated?
+    created_at != updated_at
+  end
 end
