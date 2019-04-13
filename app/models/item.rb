@@ -48,4 +48,8 @@ class Item < ApplicationRecord
   def ordered?
     order_items.count > 0
   end
+
+  def average_rating
+    OrderItem.joins(:review).where(item_id: id).average(:rating)
+  end
 end
