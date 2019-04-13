@@ -9,6 +9,12 @@
     <p>Quantity: <%= oitem.quantity %></p>
     <p>Subtotal: <%= number_to_currency(oitem.subtotal) %></p>
     <p>Fulfilled: <%= oitem.fulfilled ? 'Yes' : 'No' %></p>
+
+    <%# <% if oitem.reviewable? %> %>
+      <%# <%= link_to "Review", new_profile_review_path %> %>
+    <%# <% else %> %>
+      <!-- <p>Item Already Reviewed</p> -->
+    <%# <% end %> %> %>
     <!-- review button oitem.reviewable? -->
   </div>
 </div>
