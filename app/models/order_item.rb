@@ -30,6 +30,8 @@ class OrderItem < ApplicationRecord
   end
 
   def reviewable?
+    # binding.pry
+    review.nil? && order.status == "shipped"
     # order is complete - self.order.status
     # user = self.order.user
     # user has not reviewed this order item yet - self.reviews.where(user_id: user.id)nil?
