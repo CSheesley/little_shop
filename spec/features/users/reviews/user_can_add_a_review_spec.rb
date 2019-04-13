@@ -19,10 +19,12 @@ RSpec.describe 'New Item Review', type: :feature do
     @order_3 = create(:order, user_id: @user.id)
     @order_item_301 = create(:order_item, order_id: @order_3.id, item_id: @item_3.id, fulfilled: true)
     @order_item_302 = create(:order_item, order_id: @order_3.id, item_id: @item_4.id, fulfilled: false)
+
+    @review_202 = create(:review, user_id: @user.id, order_item_id: @order_item_202.id)
   end
 
   describe 'As a user an order show page' do
-    it 'has a review link for each item in a completed order' do
+    it 'has a review link for each order_item in a completed order' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
       visit profile_order_path(@order_1)
@@ -39,7 +41,24 @@ RSpec.describe 'New Item Review', type: :feature do
       end
     end
 
-    it 'does not show a review link for any item in an order that has not been shipped' do
+    it 'does not show a review link for any order_item which has already been reviewed in the order' do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit profile_order_path(@order_2)
+
+      expect(@order_2.order_items).to eq([@order_item_201, @order_item_202])
+      expect(@order_2.status).to eq("shipped")
+
+      within "#oitem-#{@order_item_201.id}" do
+        expect(page).to have_link("Review")
+      end
+
+      within "#oitem-#{@order_item_202.id}" do
+        expect(page).to_not have_link("Review")
+      end
+    end
+
+    it 'does not show a review link for any order_item in an order that has not been shipped' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
       visit profile_order_path(@order_3)
