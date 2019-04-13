@@ -76,7 +76,7 @@ RSpec.describe 'New Item Review', type: :feature do
     end
 
     context 'when I click the review link on an order_item' do
-      it 'shows a form to fill out and submit, I then receive a confirmation message, I am then redirected back to the order show page' do
+      it 'shows a form to fill out and submit, I receive a confirmation message, I am then redirected back to the order show page' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
         visit profile_order_path(@order_1)
@@ -86,17 +86,13 @@ RSpec.describe 'New Item Review', type: :feature do
           expect(current_path).to eq(new_profile_review_path)
         end
 
-        expect(page).to have_field("Title")
-        expect(page).to have_field("Rating")
-        expect(page).to have_field("Description")
-
-        fill_in "Title", with: "Item Broke"
-        fill_in "Rating", with: 1
-        fill_in "Description", with: "I changed my mind, this item broke"
+        fill_in "Title", with: "My New Review"
+        fill_in "Rating", with: 5
+        fill_in "Description", with: "I think this worked, so I gave it a 5!"
 
         click_on "Create Review"
 
-        expect(page).to have_content("Your review for #{@order_item_101.item_name} has been created!")
+        expect(page).to have_content("Your review for #{@order_item_101.item.name} has been created!")
         expect(current_path).to eq(profile_order_path(@order_1))
 
         within "#oitem-#{@order_item_101.id}" do

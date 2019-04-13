@@ -11,7 +11,7 @@
     <p>Fulfilled: <%= oitem.fulfilled ? 'Yes' : 'No' %></p>
 
     <% if oitem.reviewable? %>
-      <%= link_to "Review", new_profile_review_path %>
+      <%= link_to "Review", new_profile_review_path(oitem_id: oitem.id) %>
     <% else %>
     <% end %>
   </div>

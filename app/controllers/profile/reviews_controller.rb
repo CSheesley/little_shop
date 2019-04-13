@@ -5,9 +5,19 @@ class Profile::ReviewsController < ApplicationController
   end
 
   def new
+    @order_item_id = params[:oitem_id]
+    @review = Review.new
   end
 
   def create
+    @review = current_user.reviews.new(new_params)
+    if @review.save
+      flash[:new] = "Your review for #{@review.item_reviewed.name} has been created!"
+      redirect_to profile_order_path(@review.order_item.order_id)
+    else
+      flash[:errors] = @review.errors.full_messages.join(", ")
+      render :new
+    end
   end
 
   def edit
@@ -17,7 +27,7 @@ class Profile::ReviewsController < ApplicationController
   def update
     @review = current_review
     if @review.update(update_params)
-      flash[:update] = "Review for #{@review.title} has been updated!"
+      flash[:update] = "Review for #{@review.item_reviewed.name} has been updated!"
       redirect_to profile_reviews_path
     else
       flash[:errors] = @review.errors.full_messages.join(", ")
@@ -36,6 +46,18 @@ class Profile::ReviewsController < ApplicationController
 
   def current_review
     Review.find(params[:id])
+  end
+
+  def current_order
+    current_review.order_item.order_id
+  end
+
+  def current_item
+    current_review.order_item.order_id
+  end
+
+  def new_params
+    params.require(:review).permit(:title, :rating, :description, :order_item_id)
   end
 
   def update_params
