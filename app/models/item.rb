@@ -52,4 +52,8 @@ class Item < ApplicationRecord
   def average_rating
     OrderItem.joins(:review).where(item_id: id).average(:rating)
   end
+
+  def number_of_reviews
+    OrderItem.joins(:review).where(item_id: id).count
+  end
 end
