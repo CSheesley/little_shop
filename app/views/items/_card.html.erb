@@ -36,7 +36,6 @@
       <% end %>
 
 
-
       <% unless current_admin? || current_merchant? %>
         <div class="btn btn-light"><%= button_to "Add to Cart",  cart_item_path(item.id)%></div>
       <% end %>
