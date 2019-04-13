@@ -29,6 +29,12 @@
         <strong>Average Fulfillment Time: <%= distance_of_time_in_words(item.average_fulfillment_time) %></strong>
       <% end %>
 
+      <% if item.average_rating %>
+        <p>Average Rating: <%= item.average_rating.round(2) %></p>
+      <% else %>
+        <p>No Reviews Yet</p>
+      <% end %>
+
       <% unless current_admin? || current_merchant? %>
         <div class="btn btn-light"><%= button_to "Add to Cart",  cart_item_path(item.id)%></div>
       <% end %>
