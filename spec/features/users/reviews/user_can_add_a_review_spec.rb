@@ -23,7 +23,7 @@ RSpec.describe 'New Item Review', type: :feature do
     @review_202 = create(:review, user_id: @user.id, order_item_id: @order_item_202.id)
   end
 
-  describe 'As a user an order show page' do
+  context 'As a user on an order show page' do
     it 'has a review link for each order_item in a completed order' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
@@ -72,6 +72,36 @@ RSpec.describe 'New Item Review', type: :feature do
 
       within "#oitem-#{@order_item_302.id}" do
         expect(page).to_not have_link("Review")
+      end
+    end
+
+    context 'when I click the review link on an order_item' do
+      it 'shows a form to fill out and submit, I then receive a confirmation message, I am then redirected back to the order show page' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+        visit profile_order_path(@order_1)
+
+        within "#oitem-#{@order_item_101.id}" do
+          click_on "Review"
+          expect(current_path).to eq(new_profile_review_path)
+        end
+
+        expect(page).to have_field("Title")
+        expect(page).to have_field("Rating")
+        expect(page).to have_field("Description")
+
+        fill_in "Title", with: "Item Broke"
+        fill_in "Rating", with: 1
+        fill_in "Description", with: "I changed my mind, this item broke"
+
+        click_on "Create Review"
+
+        expect(page).to have_content("Your review for #{@order_item_101.item_name} has been created!")
+        expect(current_path).to eq(profile_order_path(@order_1))
+
+        within "#oitem-#{@order_item_101.id}" do
+          expect(page).to_not have_content("Review")
+        end
       end
     end
   end
