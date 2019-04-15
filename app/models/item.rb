@@ -1,6 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :user, foreign_key: 'merchant_id'
   has_many :order_items, dependent: :destroy
+  has_many :reviews, through: :order_items
   has_many :orders, through: :order_items
 
   validates_presence_of :name, :description
@@ -50,16 +51,16 @@ class Item < ApplicationRecord
   end
 
   def average_rating
-    OrderItem.joins(:review).where(item_id: id).average(:rating)
+    reviews.average(:rating)
+    # OrderItem.joins(:review).where(item_id: id).average(:rating)
   end
 
   def number_of_reviews
-    OrderItem.joins(:review).where(item_id: id).count
+    reviews.count
+    # OrderItem.joins(:review).where(item_id: id).count
   end
 
-  def reviews
-    all_reviews = OrderItem.joins(:review).where(item_id: id)
-    reviews = all_reviews.map { |order_item| order_item.review }
-    # Review.joins(order_item: :item).where("order_item.item_id = id")
-  end
+  # def reviews
+  #   Review.joins(:order_item).where("order_items.item_id = ?", id)
+  # end
 end

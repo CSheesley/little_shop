@@ -1,5 +1,5 @@
 class Profile::ReviewsController < ApplicationController
-  # before_action :require_reguser
+
   def index
     @reviews = Review.where(user: current_user.id)
   end
@@ -10,7 +10,7 @@ class Profile::ReviewsController < ApplicationController
   end
 
   def create
-    @order_item_id = params[:oitem_id]
+    @order_item_id = params[:review][:order_item_id]
     @review = current_user.reviews.new(new_params)
     if @review.save
       flash[:new] = "Your review for #{@review.item_reviewed.name} has been created!"
@@ -47,10 +47,6 @@ class Profile::ReviewsController < ApplicationController
 
   def current_review
     Review.find(params[:id])
-  end
-
-  def current_order
-    current_review.order_item.order_id
   end
 
   def current_item
