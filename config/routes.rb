@@ -23,10 +23,18 @@ Rails.application.routes.draw do
   get '/profile', to: 'users#show', as: :profile
   get '/profile/edit', to: 'users#edit', as: :edit_profile
   patch '/profile/edit', to: 'users#update'
+
   namespace :profile do
     resources :orders, only: [:index, :show, :destroy, :create]
     resources :reviews, only: [:index, :new, :create, :edit, :update, :destroy]
   end
+
+  # namespace :profile do
+  #   resources :orders, only: [:index, :show, :destroy, :create]
+  #   resources :order_items do
+  #     resources :reviews, only: [:index, :new, :create, :edit, :update, :destroy]
+  #   end
+  # end
 
   namespace :dashboard do
     get '/', to: 'dashboard#index'
