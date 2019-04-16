@@ -140,24 +140,19 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
     context 'it shows the top ten merchants who...' do
       it 'have sold the most items this month' do
-        # sold = any order that has been placed? Exclude cancelled?
-        # all items in orders which have not yet been cancelled
-
-        a = User.joins(items: {order_items: :order}).where.not("orders.status = ?", 3).where("order_items.created_at BETWEEN ? and ?", 30.days.ago, Time.now).select("users.*, SUM(order_items.quantity) as total_items").group("users.id").order("total_items DESC").limit(10)
-        b = a.each { |merchant| p "#{merchant.name} - #{merchant.total_items}"}
 
         within "#top-ten-merchants" do
           within "#by-items-sold-current-month" do
-            expect(page.all('li')[0]).to have_content("#{@merch_5.name} - #{@merch_5.total_items}")
-            expect(page.all('li')[1]).to have_content("#{@merch_6.name} - #{@merch_6.total_items}")
-            expect(page.all('li')[2]).to have_content("#{@merch_11.name} - #{@merch_11.total_items}")
-            expect(page.all('li')[3]).to have_content("#{@merch_4.name} - #{@merch_4.total_items}")
-            expect(page.all('li')[4]).to have_content("#{@merch_3.name} - #{@merch_3.total_items}")
-            expect(page.all('li')[5]).to have_content("#{@merch_12.name} - #{@merch_12.total_items}")
-            expect(page.all('li')[6]).to have_content("#{@merch_10.name} - #{@merch_10.total_items}")
-            expect(page.all('li')[7]).to have_content("#{@merch_7.name} - #{@merch_7.total_items}")
-            expect(page.all('li')[8]).to have_content("#{@merch_2.name} - #{@merch_2.total_items}")
-            expect(page.all('li')[9]).to have_content("#{@merch_9.name} - #{@merch_9.total_items}")
+            expect(page.all('li')[0]).to have_content("#{@merch_5.name} - 3090")
+            expect(page.all('li')[1]).to have_content("#{@merch_6.name} - 2440")
+            expect(page.all('li')[2]).to have_content("#{@merch_11.name} - 2000")
+            expect(page.all('li')[3]).to have_content("#{@merch_4.name} -  1740")
+            expect(page.all('li')[4]).to have_content("#{@merch_3.name} - 1400")
+            expect(page.all('li')[5]).to have_content("#{@merch_12.name} - 1300")
+            expect(page.all('li')[6]).to have_content("#{@merch_10.name} - 900")
+            expect(page.all('li')[7]).to have_content("#{@merch_7.name} -  700")
+            expect(page.all('li')[8]).to have_content("#{@merch_2.name} - 650")
+            expect(page.all('li')[9]).to have_content("#{@merch_9.name} -  400")
 
             expect(page.all('li')).to_not have_content("#{@merch_1.name}")
             expect(page.all('li')).to_not have_content("#{@merch_8.name}")
@@ -178,6 +173,27 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
       it 'have sold the most items last month' do
 
+
+        a = User.joins(items: {order_items: :order}).where.not("orders.status = ?", 3).where("order_items.created_at BETWEEN ? and ?", 60.days.ago, 30.days.ago).select("users.*, SUM(order_items.quantity) as total_items").group("users.id").order("total_items DESC").limit(10)
+        b = a.each { |merchant| p "#{merchant.name} - #{merchant.total_items}"}
+
+        within "#top-ten-merchants" do
+          within "#by-items-sold-previous-month" do
+            # expect(page.all('li')[0]).to have_content("#{@merch_5.name} - 3090")
+            # expect(page.all('li')[1]).to have_content("#{@merch_6.name} - 2440")
+            # expect(page.all('li')[2]).to have_content("#{@merch_11.name} - 2000")
+            # expect(page.all('li')[3]).to have_content("#{@merch_4.name} -  1740")
+            # expect(page.all('li')[4]).to have_content("#{@merch_3.name} - 1400")
+            # expect(page.all('li')[5]).to have_content("#{@merch_12.name} - 1300")
+            # expect(page.all('li')[6]).to have_content("#{@merch_10.name} - 900")
+            # expect(page.all('li')[7]).to have_content("#{@merch_7.name} -  700")
+            # expect(page.all('li')[8]).to have_content("#{@merch_2.name} - 650")
+            # expect(page.all('li')[9]).to have_content("#{@merch_9.name} -  400")
+            #
+            # expect(page.all('li')).to_not have_content("#{@merch_1.name}")
+            # expect(page.all('li')).to_not have_content("#{@merch_8.name}")
+          end
+        end
       end
 
       it 'have fulfilled non-cancelled orders this month' do #non-cancelled order_items

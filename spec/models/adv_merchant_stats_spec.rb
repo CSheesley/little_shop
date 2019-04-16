@@ -25,7 +25,7 @@ RSpec.describe 'User - Merchant', type: :model do
     @item_11 = create(:item, user: @merch_11)
     @item_12 = create(:item, user: @merch_12)
 
-#This Month
+#Current Month (today-30 days)
     #orders
     @order_101 = @corey.orders.create(status: 'shipped', created_at: 10.days.ago, updated_at: 2.days.ago)
     @order_102 = @corey.orders.create(status: 'shipped', created_at: 8.days.ago, updated_at: 2.days.ago)
@@ -44,7 +44,6 @@ RSpec.describe 'User - Merchant', type: :model do
     @order_401 = @steph.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 5.days.ago)
     @order_402 = @steph.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
     @order_403 = @steph.orders.create(status: 'shipped', created_at: 5.days.ago, updated_at: 2.days.ago)
-
 
     #order_items (Corey - CO - Golden)
     @oi_cur_101_1 = create(:order_item, order_id: @order_101.id, item_id: @item_1.id, quantity: 100, fulfilled: true, created_at: @order_101.created_at, updated_at: 6.days.ago)
@@ -96,7 +95,6 @@ RSpec.describe 'User - Merchant', type: :model do
 
     @oi_cur_403_1 = create(:order_item, order_id: @order_403.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_403.created_at, updated_at: 5.days.ago)
 
-############################################################################################################
     #cancelled (order_103)
     @oi_cur_103_1 = create(:order_item, order_id: @order_103.id, item_id: @item_1.id, quantity: 100, fulfilled: false, created_at: @order_103.created_at, updated_at: 3.days.ago)
     @oi_cur_103_2 = create(:order_item, order_id: @order_103.id, item_id: @item_2.id, quantity: 200, fulfilled: false, created_at: @order_103.created_at, updated_at: 3.days.ago)
@@ -106,16 +104,23 @@ RSpec.describe 'User - Merchant', type: :model do
     @oi_cur_303_1 = create(:order_item, order_id: @order_303.id, item_id: @item_7.id, quantity: 100, fulfilled: false, created_at: @order_303.created_at, updated_at: 3.days.ago)
     @oi_cur_303_2 = create(:order_item, order_id: @order_303.id, item_id: @item_8.id, quantity: 200, fulfilled: false, created_at: @order_303.created_at, updated_at: 3.days.ago)
     @oi_cur_303_3 = create(:order_item, order_id: @order_303.id, item_id: @item_9.id, quantity: 300, fulfilled: false, created_at: @order_303.created_at, updated_at: 3.days.ago)
+
+    ############################################################################################################
+
+#Previous Month (30-60 days)
+
+
   end
 
   describe 'class methods' do
 
-    it '.top_ten_merchants_by_items_sold_current_month' do
+    it '.top_ten_merchants_by_items_sold_between(start_date, end_date)' do
       expected = [@merch_5, @merch_6, @merch_11, @merch_4, @merch_3,
                   @merch_12, @merch_10, @merch_7, @merch_2, @merch_9]
 
-      expect(User.top_ten_merchants_by_items_sold_current_month).to eq(expected)
+      expect(User.top_ten_merchants_by_items_sold_between(Time.now, 30.days.ago)).to eq(expected)
     end
+
   end
 
 end

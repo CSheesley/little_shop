@@ -6,12 +6,20 @@
 
       <div id="by-items-sold-current-month">
         <h5>Items Sold Current Month</h5>
-
+        <ol>
+          <% @merch_top_ten_by_items_current_month.each do |merchant| %>
+          <li><%= merchant.name %> - <%= merchant.total_items %></li>
+          <% end %>
+        </ol>
       </div>
 
       <div id="by-items-sold-previous-month">
-        <h5>Items Sold Previous Month</h5>
-
+        <!-- <h5>Items Sold Previous Month</h5> -->
+        <!-- <ol> -->
+          <%# <% @merch_top_ten_by_items_previous_month.each do |merchant| %> %>
+          <!-- <li>< ></li> -->
+          <%# <% end %> %>
+        <!-- </ol> -->
       </div>
 
       <div id="by-filled-orders-current-month">
