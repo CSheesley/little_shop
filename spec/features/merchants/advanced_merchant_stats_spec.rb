@@ -259,10 +259,44 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
       it 'have fulfilled non-cancelled orders this month' do #non-cancelled order_items
 
+        within "#top-ten-merchants" do
+          within "#by-filled-orders-current-month" do
+            expect(page.all('li')[0]).to have_content("#{@merch_5.name} - 6")
+            expect(page.all('li')[1]).to have_content("#{@merch_4.name} - 5")
+            expect(page.all('li')[2]).to have_content("#{@merch_6.name} - 4")
+            expect(page.all('li')[3]).to have_content("#{@merch_3.name} - 4")
+            expect(page.all('li')[4]).to have_content("#{@merch_2.name} - 3")
+            expect(page.all('li')[5]).to have_content("#{@merch_1.name} - 3")
+            expect(page.all('li')[6]).to have_content("#{@merch_11.name} - 2")
+            expect(page.all('li')[7]).to have_content("#{@merch_12.name} - 2")
+            expect(page.all('li')[8]).to have_content("#{@merch_10.name} - 2")
+            expect(page.all('li')[9]).to have_content("#{@merch_7.name} -  1")
+
+            expect(page.all('li')).to_not have_content("#{@merch_8.name}")
+            expect(page.all('li')).to_not have_content("#{@merch_9.name}")
+          end
+        end
       end
 
       it 'have fulfilled non-cancelled orders last month' do #non-cancelled order_items
 
+        within "#top-ten-merchants" do
+          within "#by-filled-orders-previous-month" do
+            expect(page.all('li')[0]).to have_content("#{@merch_4.name} - 6")
+            expect(page.all('li')[1]).to have_content("#{@merch_5.name} - 5")
+            expect(page.all('li')[2]).to have_content("#{@merch_2.name} - 4")
+            expect(page.all('li')[3]).to have_content("#{@merch_1.name} - 4")
+            expect(page.all('li')[4]).to have_content("#{@merch_6.name} - 3")
+            expect(page.all('li')[5]).to have_content("#{@merch_3.name} - 3")
+            expect(page.all('li')[6]).to have_content("#{@merch_7.name} - 2")
+            expect(page.all('li')[7]).to have_content("#{@merch_8.name} - 2")
+            expect(page.all('li')[8]).to have_content("#{@merch_9.name} - 2")
+            expect(page.all('li')[9]).to have_content("#{@merch_11.name} -  1")
+
+            expect(page.all('li')).to_not have_content("#{@merch_12.name}")
+            expect(page.all('li')).to_not have_content("#{@merch_10.name}")
+          end
+        end
       end
     end
   end

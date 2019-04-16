@@ -6,6 +6,7 @@
 
       <div id="by-items-sold-current-month">
         <h5>Items Sold Current Month</h5>
+        <h6>past 30 days</h6>
         <ol>
           <% @merch_top_ten_by_items_current_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_items %></li>
@@ -14,7 +15,8 @@
       </div>
 
       <div id="by-items-sold-previous-month">
-        <h5>Items Sold Previous Month</h5> -->
+        <h5>Items Sold Previous Month</h5>
+        <h6>previous 31 - 60 days</h6>
         <ol>
           <% @merch_top_ten_by_items_previous_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_items %></li>
@@ -23,11 +25,23 @@
       </div>
 
       <div id="by-filled-orders-current-month">
-
+        <h5>Orders Fulfilled Current Month</h5>
+        <h6>non cancelled orders</h6>
+        <ol>
+          <% @merch_top_ten_by_orders_current_month.each do |merchant| %>
+          <li><%= merchant.name %> - <%= merchant.total_orders %></li>
+          <% end %>
+        </ol>
       </div>
 
       <div id="by-filled-orders-previous-month">
-
+        <h5>Orders Fulfilled Previous Month</h5>
+        <h6>non cancelled orders</h6>
+        <ol>
+          <% @merch_top_ten_by_orders_previous_month.each do |merchant| %>
+          <li><%= merchant.name %> - <%= merchant.total_orders %></li>
+          <% end %>
+        </ol>
       </div>
 
     </section>
