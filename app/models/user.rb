@@ -157,14 +157,24 @@ class User < ApplicationRecord
         .limit(limit)
   end
 
-  def self.top_ten_merchants_by_items_sold_between(start_date, end_date)
+  def self.top_merchants_by_items_sold_between(merch_count, start_date, end_date)
     self.joins(items: {order_items: :order})
         .where.not("orders.status = ?", 3)
         .where("order_items.created_at BETWEEN ? and ?", end_date, start_date)
         .select("users.*, SUM(order_items.quantity) as total_items")
         .group("users.id")
         .order("total_items DESC")
-        .limit(10)
+        .limit(merch_count)
+  end
+
+  def self.top_merchants_by_non_cancelled_orders_between(merch_count, start_date, end_date)
+    self.joins(items: {order_items: :order})
+        .where.not("orders.status = ?", 3)
+        .where("order_items.fulfilled = ? AND order_items.created_at BETWEEN ? and ?", 'true', end_date, start_date) 
+        .select("users.*, sum(order_items.quantity) as total_items, count(order_items.id) as total_orders")
+        .group("users.id")
+        .order("total_orders DESC, total_items DESC")
+        .limit(merch_count)
   end
 
 end

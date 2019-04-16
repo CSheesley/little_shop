@@ -12,7 +12,10 @@ class MerchantsController < ApplicationController
     @top_cities_by_order_count = User.top_user_cities_by_order_count(3)
     @top_orders_by_items_shipped = Order.sorted_by_items_shipped(3)
 
-    @merch_top_ten_by_items_current_month = User.top_ten_merchants_by_items_sold_between(Time.now, 31.days.ago)
-    @merch_top_ten_by_items_previous_month = User.top_ten_merchants_by_items_sold_between(31.days.ago, 61.days.ago)
+    @merch_top_ten_by_items_current_month = User.top_merchants_by_items_sold_between(10, Time.now, 31.days.ago)
+    @merch_top_ten_by_items_previous_month = User.top_merchants_by_items_sold_between(10, 31.days.ago, 61.days.ago)
+
+    @merch_top_ten_by_orders_current_month = User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)
+    @merch_top_ten_by_orders_previous_month = User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)
   end
 end
