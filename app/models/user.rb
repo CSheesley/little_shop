@@ -167,14 +167,4 @@ class User < ApplicationRecord
         .limit(10)
   end
 
-  # def self.top_ten_merchants_by_items_sold_previous_month
-  #   self.joins(items: {order_items: :order})
-  #       .where.not("orders.status = ?", 3)
-  #       .where("order_items.created_at BETWEEN ? and ?", 60.days.ago, 30.days.ago)
-  #       .select("users.*, SUM(order_items.quantity) as total_items")
-  #       .group("users.id")
-  #       .order("total_items DESC")
-  #       .limit(10)
-  # end
-
 end

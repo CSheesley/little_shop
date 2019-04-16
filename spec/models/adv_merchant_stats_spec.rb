@@ -27,7 +27,7 @@ RSpec.describe 'User - Merchant', type: :model do
 
 #Current Month (today-30 days)
     #orders
-    @order_101 = @corey.orders.create(status: 'shipped', created_at: 10.days.ago, updated_at: 2.days.ago)
+    @order_101 = @corey.orders.create(status: 'shipped', created_at: 30.days.ago, updated_at: 2.days.ago)
     @order_102 = @corey.orders.create(status: 'shipped', created_at: 8.days.ago, updated_at: 2.days.ago)
     @order_103 = @corey.orders.create(status: 'cancelled', created_at: 5.days.ago, updated_at: 3.days.ago)
     @order_104 = @corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 10.days.ago)
@@ -105,22 +105,100 @@ RSpec.describe 'User - Merchant', type: :model do
     @oi_cur_303_2 = create(:order_item, order_id: @order_303.id, item_id: @item_8.id, quantity: 200, fulfilled: false, created_at: @order_303.created_at, updated_at: 3.days.ago)
     @oi_cur_303_3 = create(:order_item, order_id: @order_303.id, item_id: @item_9.id, quantity: 300, fulfilled: false, created_at: @order_303.created_at, updated_at: 3.days.ago)
 
-    ############################################################################################################
+############################################################################################################
 
-#Previous Month (30-60 days)
+    #Previous Month (30-60 days)
+    @order_501 = @corey.orders.create(status: 'shipped', created_at: 40.days.ago, updated_at: 25.days.ago)
+    @order_502 = @corey.orders.create(status: 'shipped', created_at: 38.days.ago, updated_at: 28.days.ago)
+    @order_503 = @corey.orders.create(status: 'cancelled', created_at: 31.days.ago, updated_at: 26.days.ago)
+    @order_504 = @corey.orders.create(status: 'shipped', created_at: 45.days.ago, updated_at: 32.days.ago)
 
+    @order_601 = @chels.orders.create(status: 'shipped', created_at: 48.days.ago, updated_at: 38.days.ago)
+    @order_602 = @chels.orders.create(status: 'shipped', created_at: 52.days.ago, updated_at: 46.days.ago)
+    @order_603 = @chels.orders.create(status: 'shipped', created_at: 36.days.ago, updated_at: 30.days.ago)
 
+    @order_701 = @zach.orders.create(status: 'shipped', created_at: 35.days.ago, updated_at: 26.days.ago)
+    @order_702 = @zach.orders.create(status: 'shipped', created_at: 37.days.ago, updated_at: 30.days.ago)
+    @order_703 = @zach.orders.create(status: 'cancelled', created_at: 50.days.ago, updated_at: 40.days.ago)
+    @order_704 = @zach.orders.create(status: 'shipped', created_at: 42.days.ago, updated_at: 40.days.ago)
+
+    @order_801 = @steph.orders.create(status: 'shipped', created_at: 43.days.ago, updated_at: 25.days.ago)
+    @order_802 = @steph.orders.create(status: 'shipped', created_at: 55.days.ago, updated_at: 38.days.ago)
+    @order_803 = @steph.orders.create(status: 'shipped', created_at: 60.days.ago, updated_at: 55.days.ago)
+
+    #order_items (Corey - CO - Golden)
+    @oi_prev_501_1 = create(:order_item, order_id: @order_501.id, item_id: @item_1.id, quantity: 100, fulfilled: true, created_at: @order_501.created_at, updated_at: 30.days.ago)
+    @oi_prev_501_2 = create(:order_item, order_id: @order_501.id, item_id: @item_2.id, quantity: 200, fulfilled: true, created_at: @order_501.created_at, updated_at: 35.days.ago)
+    @oi_prev_501_3 = create(:order_item, order_id: @order_501.id, item_id: @item_3.id, quantity: 300, fulfilled: true, created_at: @order_501.created_at, updated_at: 25.days.ago)
+
+    @oi_prev_502_1 = create(:order_item, order_id: @order_502.id, item_id: @item_4.id, quantity: 400, fulfilled: true, created_at: @order_502.created_at, updated_at: 26.days.ago)
+    @oi_prev_502_2 = create(:order_item, order_id: @order_502.id, item_id: @item_5.id, quantity: 300, fulfilled: true, created_at: @order_502.created_at, updated_at: 30.days.ago)
+    @oi_prev_502_3 = create(:order_item, order_id: @order_502.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_502.created_at, updated_at: 28.days.ago)
+
+    @oi_prev_504_1 = create(:order_item, order_id: @order_504.id, item_id: @item_4.id, quantity: 200, fulfilled: true, created_at: @order_504.created_at, updated_at: 40.days.ago)
+    @oi_prev_504_2 = create(:order_item, order_id: @order_504.id, item_id: @item_5.id, quantity: 540, fulfilled: true, created_at: @order_504.created_at, updated_at: 32.days.ago)
+    @oi_prev_504_3 = create(:order_item, order_id: @order_504.id, item_id: @item_7.id, quantity: 640, fulfilled: true, created_at: @order_504.created_at, updated_at: 36.days.ago)
+
+    #order_items (Chels - CO - Lakewood)
+    @oi_prev_601_1 = create(:order_item, order_id: @order_601.id, item_id: @item_1.id, quantity: 100, fulfilled: true, created_at: @order_601.created_at, updated_at: 40.days.ago)
+    @oi_prev_601_2 = create(:order_item, order_id: @order_601.id, item_id: @item_2.id, quantity: 200, fulfilled: true, created_at: @order_601.created_at, updated_at: 38.days.ago)
+    @oi_prev_601_3 = create(:order_item, order_id: @order_601.id, item_id: @item_3.id, quantity: 300, fulfilled: true, created_at: @order_601.created_at, updated_at: 42.days.ago)
+
+    @oi_prev_602_1 = create(:order_item, order_id: @order_602.id, item_id: @item_4.id, quantity: 400, fulfilled: true, created_at: @order_602.created_at, updated_at: 49.days.ago)
+    @oi_prev_602_2 = create(:order_item, order_id: @order_602.id, item_id: @item_5.id, quantity: 200, fulfilled: true, created_at: @order_602.created_at, updated_at: 46.days.ago)
+    @oi_prev_602_3 = create(:order_item, order_id: @order_602.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_602.created_at, updated_at: 50.days.ago)
+
+    @oi_prev_603_1 = create(:order_item, order_id: @order_603.id, item_id: @item_4.id, quantity: 400, fulfilled: true, created_at: @order_603.created_at, updated_at: 34.days.ago)
+    @oi_prev_603_2 = create(:order_item, order_id: @order_603.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_603.created_at, updated_at: 32.days.ago)
+    @oi_prev_603_3 = create(:order_item, order_id: @order_603.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_603.created_at, updated_at: 30.days.ago)
+
+    #order_items (Zach - IL - Chicago)
+    @oi_prev_701_1 = create(:order_item, order_id: @order_701.id, item_id: @item_7.id, quantity: 700, fulfilled: true, created_at: @order_701.created_at, updated_at: 30.days.ago)
+    @oi_prev_701_2 = create(:order_item, order_id: @order_701.id, item_id: @item_8.id, quantity: 250, fulfilled: true, created_at: @order_701.created_at, updated_at: 26.days.ago)
+    @oi_prev_701_3 = create(:order_item, order_id: @order_701.id, item_id: @item_9.id, quantity: 400, fulfilled: true, created_at: @order_701.created_at, updated_at: 29.days.ago)
+
+    @oi_prev_702_1 = create(:order_item, order_id: @order_702.id, item_id: @item_2.id, quantity: 450, fulfilled: true, created_at: @order_702.created_at, updated_at: 35.days.ago)
+    @oi_prev_702_2 = create(:order_item, order_id: @order_702.id, item_id: @item_11.id, quantity: 1000, fulfilled: true, created_at: @order_702.created_at, updated_at: 30.days.ago)
+    @oi_prev_702_3 = create(:order_item, order_id: @order_702.id, item_id: @item_9.id, quantity: 650, fulfilled: true, created_at: @order_702.created_at, updated_at: 32.days.ago)
+
+    @oi_prev_704_1 = create(:order_item, order_id: @order_704.id, item_id: @item_1.id, quantity: 450, fulfilled: true, created_at: @order_704.created_at, updated_at: 44.days.ago)
+    @oi_prev_704_2 = create(:order_item, order_id: @order_704.id, item_id: @item_4.id, quantity: 100, fulfilled: true, created_at: @order_704.created_at, updated_at: 42.days.ago)
+    @oi_prev_704_3 = create(:order_item, order_id: @order_704.id, item_id: @item_5.id, quantity: 350, fulfilled: true, created_at: @order_704.created_at, updated_at: 40.days.ago)
+
+    #order_items (Steph - IL - Wicker Park)
+    @oi_prev_801_1 = create(:order_item, order_id: @order_801.id, item_id: @item_1.id, quantity: 150, fulfilled: true, created_at: @order_801.created_at, updated_at: 25.days.ago)
+    @oi_prev_801_2 = create(:order_item, order_id: @order_801.id, item_id: @item_2.id, quantity: 250, fulfilled: true, created_at: @order_801.created_at, updated_at: 35.days.ago)
+    @oi_prev_801_3 = create(:order_item, order_id: @order_801.id, item_id: @item_3.id, quantity: 350, fulfilled: true, created_at: @order_801.created_at, updated_at: 40.days.ago)
+
+    @oi_prev_802_1 = create(:order_item, order_id: @order_802.id, item_id: @item_10.id, quantity: 450, fulfilled: true, created_at: @order_802.created_at, updated_at: 44.days.ago)
+    @oi_prev_802_2 = create(:order_item, order_id: @order_802.id, item_id: @item_8.id, quantity: 1000, fulfilled: true, created_at: @order_802.created_at, updated_at: 38.days.ago)
+    @oi_prev_802_3 = create(:order_item, order_id: @order_802.id, item_id: @item_12.id, quantity: 500, fulfilled: true, created_at: @order_802.created_at, updated_at: 42.days.ago)
+
+    @oi_prev_803_1 = create(:order_item, order_id: @order_803.id, item_id: @item_4.id, quantity: 500, fulfilled: true, created_at: @order_803.created_at, updated_at: 55.days.ago)
+
+    #cancelled (order_503)
+    @oi_cur_503_1 = create(:order_item, order_id: @order_503.id, item_id: @item_4.id, quantity: 100, fulfilled: false, created_at: @order_503.created_at, updated_at: 26.days.ago)
+    @oi_cur_503_2 = create(:order_item, order_id: @order_503.id, item_id: @item_5.id, quantity: 200, fulfilled: false, created_at: @order_503.created_at, updated_at: 29.days.ago)
+    @oi_cur_503_3 = create(:order_item, order_id: @order_503.id, item_id: @item_6.id, quantity: 300, fulfilled: false, created_at: @order_503.created_at, updated_at: 30.days.ago)
+
+    #cancelled (order_703)
+    @oi_cur_703_1 = create(:order_item, order_id: @order_703.id, item_id: @item_10.id, quantity: 100, fulfilled: false, created_at: @order_703.created_at, updated_at: 40.days.ago)
+    @oi_cur_703_2 = create(:order_item, order_id: @order_703.id, item_id: @item_11.id, quantity: 200, fulfilled: false, created_at: @order_703.created_at, updated_at: 42.days.ago)
+    @oi_cur_703_3 = create(:order_item, order_id: @order_703.id, item_id: @item_12.id, quantity: 300, fulfilled: false, created_at: @order_703.created_at, updated_at: 44.days.ago)
   end
 
   describe 'class methods' do
 
     it '.top_ten_merchants_by_items_sold_between(start_date, end_date)' do
-      expected = [@merch_5, @merch_6, @merch_11, @merch_4, @merch_3,
-                  @merch_12, @merch_10, @merch_7, @merch_2, @merch_9]
+      current_month_expected = [@merch_5, @merch_6, @merch_11, @merch_4, @merch_3,
+                                @merch_12, @merch_10, @merch_7, @merch_2, @merch_9]
 
-      expect(User.top_ten_merchants_by_items_sold_between(Time.now, 30.days.ago)).to eq(expected)
+      previous_month_expected = [@merch_4, @merch_5, @merch_6, @merch_7, @merch_8,
+                                 @merch_2, @merch_9, @merch_11, @merch_3, @merch_1]
+
+      expect(User.top_ten_merchants_by_items_sold_between(Time.now, 31.days.ago)).to eq(current_month_expected)
+      expect(User.top_ten_merchants_by_items_sold_between(31.days.ago, 61.days.ago)).to eq(previous_month_expected)
     end
-
   end
 
 end
