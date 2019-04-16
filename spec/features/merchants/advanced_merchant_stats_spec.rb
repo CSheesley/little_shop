@@ -34,6 +34,7 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @item_7 = create(:item, user: @merch_7)
     @item_8 = create(:item, user: @merch_8)
     @item_9 = create(:item, user: @merch_9)
+    @item_10 = create(:item, user: @merch_10)
     @item_11 = create(:item, user: @merch_11)
     @item_12 = create(:item, user: @merch_12)
 
@@ -42,16 +43,20 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @order_101 = @corey.orders.create(status: 'shipped', created_at: 10.days.ago, updated_at: 2.days.ago)
     @order_102 = @corey.orders.create(status: 'shipped', created_at: 8.days.ago, updated_at: 2.days.ago)
     @order_103 = @corey.orders.create(status: 'cancelled', created_at: 5.days.ago, updated_at: 3.days.ago)
+    @order_104 = @corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 10.days.ago)
 
     @order_201 = @chels.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 8.days.ago)
     @order_202 = @chels.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
+    @order_203 = @chels.orders.create(status: 'shipped', created_at: 6.days.ago, updated_at: 2.days.ago)
 
     @order_301 = @zach.orders.create(status: 'shipped', created_at: 5.days.ago, updated_at: 3.days.ago)
     @order_302 = @zach.orders.create(status: 'shipped', created_at: 6.days.ago, updated_at: 3.days.ago)
     @order_303 = @zach.orders.create(status: 'cancelled', created_at: 7.days.ago, updated_at: 5.days.ago)
+    @order_304 = @zach.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 7.days.ago)
 
     @order_401 = @steph.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 5.days.ago)
     @order_402 = @steph.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
+    @order_403 = @steph.orders.create(status: 'shipped', created_at: 5.days.ago, updated_at: 2.days.ago)
 
 
     #order_items (Corey - CO - Golden)
@@ -63,6 +68,10 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @oi_cur_102_2 = create(:order_item, order_id: @order_102.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_102.created_at, updated_at: 3.days.ago)
     @oi_cur_102_3 = create(:order_item, order_id: @order_102.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_102.created_at, updated_at: 5.days.ago)
 
+    @oi_cur_104_1 = create(:order_item, order_id: @order_104.id, item_id: @item_4.id, quantity: 440, fulfilled: true, created_at: @order_104.created_at, updated_at: 10.days.ago)
+    @oi_cur_104_2 = create(:order_item, order_id: @order_104.id, item_id: @item_5.id, quantity: 540, fulfilled: true, created_at: @order_104.created_at, updated_at: 12.days.ago)
+    @oi_cur_104_3 = create(:order_item, order_id: @order_104.id, item_id: @item_6.id, quantity: 640, fulfilled: true, created_at: @order_104.created_at, updated_at: 13.days.ago)
+
     #order_items (Chels - CO - Lakewood)
     @oi_cur_201_1 = create(:order_item, order_id: @order_201.id, item_id: @item_1.id, quantity: 100, fulfilled: true, created_at: @order_201.created_at, updated_at: 10.days.ago)
     @oi_cur_201_2 = create(:order_item, order_id: @order_201.id, item_id: @item_2.id, quantity: 200, fulfilled: true, created_at: @order_201.created_at, updated_at: 8.days.ago)
@@ -72,25 +81,35 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @oi_cur_202_2 = create(:order_item, order_id: @order_202.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_202.created_at, updated_at: 18.days.ago)
     @oi_cur_202_3 = create(:order_item, order_id: @order_202.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_202.created_at, updated_at: 10.days.ago)
 
-    #order_items (Zach - IL - Chicago)
-    @oi_cur_301_1 = create(:order_item, order_id: @order_301.id, item_id: @item_7.id, quantity: 100, fulfilled: true, created_at: @order_301.created_at, updated_at: 2.days.ago)
-    @oi_cur_301_2 = create(:order_item, order_id: @order_301.id, item_id: @item_8.id, quantity: 200, fulfilled: true, created_at: @order_301.created_at, updated_at: 3.days.ago)
-    @oi_cur_301_3 = create(:order_item, order_id: @order_301.id, item_id: @item_9.id, quantity: 300, fulfilled: true, created_at: @order_301.created_at, updated_at: 4.days.ago)
+    @oi_cur_203_1 = create(:order_item, order_id: @order_203.id, item_id: @item_4.id, quantity: 400, fulfilled: true, created_at: @order_203.created_at, updated_at: 2.days.ago)
+    @oi_cur_203_2 = create(:order_item, order_id: @order_203.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_203.created_at, updated_at: 3.days.ago)
+    @oi_cur_203_3 = create(:order_item, order_id: @order_203.id, item_id: @item_6.id, quantity: 600, fulfilled: true, created_at: @order_203.created_at, updated_at: 4.days.ago)
 
-    @oi_cur_302_1 = create(:order_item, order_id: @order_302.id, item_id: @item_10.id, quantity: 400, fulfilled: true, created_at: @order_302.created_at, updated_at: 3.days.ago)
-    @oi_cur_302_2 = create(:order_item, order_id: @order_302.id, item_id: @item_11.id, quantity: 500, fulfilled: true, created_at: @order_302.created_at, updated_at: 4.days.ago)
-    @oi_cur_302_3 = create(:order_item, order_id: @order_302.id, item_id: @item_12.id, quantity: 600, fulfilled: true, created_at: @order_302.created_at, updated_at: 5.days.ago)
+    #order_items (Zach - IL - Chicago)
+    @oi_cur_301_1 = create(:order_item, order_id: @order_301.id, item_id: @item_7.id, quantity: 700, fulfilled: true, created_at: @order_301.created_at, updated_at: 1.days.ago)
+    @oi_cur_301_2 = create(:order_item, order_id: @order_301.id, item_id: @item_8.id, quantity: 250, fulfilled: true, created_at: @order_301.created_at, updated_at: 2.days.ago)
+    @oi_cur_301_3 = create(:order_item, order_id: @order_301.id, item_id: @item_9.id, quantity: 400, fulfilled: true, created_at: @order_301.created_at, updated_at: 4.days.ago)
+
+    @oi_cur_302_1 = create(:order_item, order_id: @order_302.id, item_id: @item_10.id, quantity: 450, fulfilled: true, created_at: @order_302.created_at, updated_at: 3.days.ago)
+    @oi_cur_302_2 = create(:order_item, order_id: @order_302.id, item_id: @item_11.id, quantity: 1000, fulfilled: true, created_at: @order_302.created_at, updated_at: 4.days.ago)
+    @oi_cur_302_3 = create(:order_item, order_id: @order_302.id, item_id: @item_12.id, quantity: 650, fulfilled: true, created_at: @order_302.created_at, updated_at: 5.days.ago)
+
+    @oi_cur_304_1 = create(:order_item, order_id: @order_304.id, item_id: @item_3.id, quantity: 450, fulfilled: true, created_at: @order_304.created_at, updated_at: 8.days.ago)
+    @oi_cur_304_2 = create(:order_item, order_id: @order_304.id, item_id: @item_4.id, quantity: 100, fulfilled: true, created_at: @order_304.created_at, updated_at: 7.days.ago)
+    @oi_cur_304_3 = create(:order_item, order_id: @order_304.id, item_id: @item_5.id, quantity: 550, fulfilled: true, created_at: @order_304.created_at, updated_at: 9.days.ago)
 
     #order_items (Steph - IL - Wicker Park)
-    @oi_cur_401_1 = create(:order_item, order_id: @order_401.id, item_id: @item_7.id, quantity: 100, fulfilled: true, created_at: @order_401.created_at, updated_at: 5.days.ago)
-    @oi_cur_401_2 = create(:order_item, order_id: @order_401.id, item_id: @item_8.id, quantity: 200, fulfilled: true, created_at: @order_401.created_at, updated_at: 6.days.ago)
-    @oi_cur_401_3 = create(:order_item, order_id: @order_401.id, item_id: @item_9.id, quantity: 300, fulfilled: true, created_at: @order_401.created_at, updated_at: 7.days.ago)
+    @oi_cur_401_1 = create(:order_item, order_id: @order_401.id, item_id: @item_1.id, quantity: 150, fulfilled: true, created_at: @order_401.created_at, updated_at: 5.days.ago)
+    @oi_cur_401_2 = create(:order_item, order_id: @order_401.id, item_id: @item_2.id, quantity: 250, fulfilled: true, created_at: @order_401.created_at, updated_at: 6.days.ago)
+    @oi_cur_401_3 = create(:order_item, order_id: @order_401.id, item_id: @item_3.id, quantity: 350, fulfilled: true, created_at: @order_401.created_at, updated_at: 7.days.ago)
 
-    @oi_cur_402_1 = create(:order_item, order_id: @order_402.id, item_id: @item_10.id, quantity: 400, fulfilled: true, created_at: @order_402.created_at, updated_at: 10.days.ago)
-    @oi_cur_402_2 = create(:order_item, order_id: @order_402.id, item_id: @item_11.id, quantity: 500, fulfilled: true, created_at: @order_402.created_at, updated_at: 12.days.ago)
-    @oi_cur_402_3 = create(:order_item, order_id: @order_402.id, item_id: @item_12.id, quantity: 600, fulfilled: true, created_at: @order_402.created_at, updated_at: 16.days.ago)
+    @oi_cur_402_1 = create(:order_item, order_id: @order_402.id, item_id: @item_10.id, quantity: 450, fulfilled: true, created_at: @order_402.created_at, updated_at: 10.days.ago)
+    @oi_cur_402_2 = create(:order_item, order_id: @order_402.id, item_id: @item_11.id, quantity: 1000, fulfilled: true, created_at: @order_402.created_at, updated_at: 12.days.ago)
+    @oi_cur_402_3 = create(:order_item, order_id: @order_402.id, item_id: @item_12.id, quantity: 650, fulfilled: true, created_at: @order_402.created_at, updated_at: 16.days.ago)
 
+    @oi_cur_403_1 = create(:order_item, order_id: @order_403.id, item_id: @item_5.id, quantity: 500, fulfilled: true, created_at: @order_403.created_at, updated_at: 5.days.ago)
 
+############################################################################################################
     #cancelled (order_103)
     @oi_cur_103_1 = create(:order_item, order_id: @order_103.id, item_id: @item_1.id, quantity: 100, fulfilled: false, created_at: @order_103.created_at, updated_at: 3.days.ago)
     @oi_cur_103_2 = create(:order_item, order_id: @order_103.id, item_id: @item_2.id, quantity: 200, fulfilled: false, created_at: @order_103.created_at, updated_at: 3.days.ago)
@@ -109,62 +128,12 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
 
 
-
-
-    # @oi_current_1_2
-    #
-    # @oi_current_2_1
-    # @oi_current_2_2
-    #
-    # @oi_current_3_1
-    # @oi_current_3_2
-    #
-    #
-    # @order_item_21
-    # @order_item_31
-
-    # @order_2 = @user_2.orders.create!(status: 'shipped', created_at: 6.days.ago, updated_at: 1.day.ago)
-    # @order_3 = @user_3.orders.create!(status: 'shipped', created_at: 4.days.ago, updated_at: 1.day.ago)
-    # @order_4 = @user_4.orders.create!(status: 'shipped', created_at: 3.days.ago, updated_at: 1.day.ago)
-
-    #orders(this month)
-
-    #orders(last month)
-
-
-    #order_items
-
-#
-# @beer_1 = Item.create!(name: "MGD", description: "good beer", stock: 120, item_price: 1.5, user_id: @merch_1.id )
-# @beer_2 = Item.create!(name: "Mich Ultra", description: "better beer", stock: 150, item_price: 2.5, user_id: @merch_2.id )
-# @beer_3 = Item.create!(name: "4 Noses", description: "yummy beer", stock: 180, item_price: 3.5, user_id: @merch_3.id )
-# @beer_4 = Item.create!(name: "Guiness", description: "the best", stock: 180, item_price: 3.5, user_id: @merch_4.id )
-#
-# @order_1 = @user_1.orders.create!(status: 'shipped', created_at: 5.days.ago, updated_at: 1.day.ago)
-# @order_2 = @user_2.orders.create!(status: 'shipped', created_at: 6.days.ago, updated_at: 1.day.ago)
-# @order_3 = @user_3.orders.create!(status: 'shipped', created_at: 4.days.ago, updated_at: 1.day.ago)
-# @order_4 = @user_4.orders.create!(status: 'shipped', created_at: 3.days.ago, updated_at: 1.day.ago)
-# @order_5 = @user_5.orders.create!(status: 'shipped', created_at: 2.days.ago, updated_at: 1.day.ago)
-# @order_6 = @user_1.orders.create!(status: 'shipped', created_at: 10.days.ago, updated_at: 1.day.ago)
-#
-# @oi_1 = OrderItem.create!(fulfilled: true, quantity: 3, order_price: 3, order_id: @order_1.id, item_id: @beer_1.id, created_at: 5.days.ago, updated_at: 1.day.ago)
-# @oi_2 = OrderItem.create!(fulfilled: true, quantity: 6, order_price: 2, order_id: @order_1.id, item_id: @beer_2.id, created_at: 5.days.ago, updated_at: 1.day.ago)
-# @oi_3 = OrderItem.create!(fulfilled: true, quantity: 9, order_price: 4, order_id: @order_2.id, item_id: @beer_3.id, created_at: 8.days.ago, updated_at: 1.day.ago)
-# @oi_4 = OrderItem.create!(fulfilled: true, quantity: 11, order_price: 5, order_id: @order_2.id, item_id: @beer_4.id, created_at: 6.days.ago, updated_at: 1.day.ago)
-# @oi_5 = OrderItem.create!(fulfilled: true, quantity: 4, order_price: 4, order_id: @order_3.id, item_id: @beer_1.id, created_at: 4.days.ago, updated_at: 1.day.ago)
-# @oi_6 = OrderItem.create!(fulfilled: true, quantity: 10, order_price: 8, order_id: @order_4.id, item_id: @beer_2.id, created_at: 3.days.ago, updated_at: 1.day.ago)
-# @oi_7 = OrderItem.create!(fulfilled: true, quantity: 25, order_price: 10, order_id: @order_5.id, item_id: @beer_3.id, created_at: 2.days.ago, updated_at: 1.day.ago)
-# @oi_8 = OrderItem.create!(fulfilled: true, quantity: 1, order_price: 4, order_id: @order_6.id, item_id: @beer_4.id, created_at: 10.days.ago, updated_at: 1.day.ago)
-#
-
-
-
     visit merchants_path
   end
 
   describe 'when I visit the merchants index page' do
     it 'has a leaderboard statistics area' do
-      binding.pry
+
       expect(page).to have_content("Leaderboard Statistics")
       expect(page).to have_selector('section', id: "leaderboard")
     end
@@ -172,7 +141,39 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     context 'it shows the top ten merchants who...' do
       it 'have sold the most items this month' do
         # sold = any order that has been placed? Exclude cancelled?
+        # all items in orders which have not yet been cancelled
 
+        a = User.joins(items: {order_items: :order}).where.not("orders.status = ?", 3).where("order_items.created_at BETWEEN ? and ?", 30.days.ago, Time.now).select("users.*, SUM(order_items.quantity) as total_items").group("users.id").order("total_items DESC").limit(10)
+        b = a.each { |merchant| p "#{merchant.name} - #{merchant.total_items}"}
+
+        within "#top-ten-merchants" do
+          within "#by-items-sold-current-month" do
+            expect(page.all('li')[0]).to have_content("#{@merch_5.name} - #{@merch_5.total_items}")
+            expect(page.all('li')[1]).to have_content("#{@merch_6.name} - #{@merch_6.total_items}")
+            expect(page.all('li')[2]).to have_content("#{@merch_11.name} - #{@merch_11.total_items}")
+            expect(page.all('li')[3]).to have_content("#{@merch_4.name} - #{@merch_4.total_items}")
+            expect(page.all('li')[4]).to have_content("#{@merch_3.name} - #{@merch_3.total_items}")
+            expect(page.all('li')[5]).to have_content("#{@merch_12.name} - #{@merch_12.total_items}")
+            expect(page.all('li')[6]).to have_content("#{@merch_10.name} - #{@merch_10.total_items}")
+            expect(page.all('li')[7]).to have_content("#{@merch_7.name} - #{@merch_7.total_items}")
+            expect(page.all('li')[8]).to have_content("#{@merch_2.name} - #{@merch_2.total_items}")
+            expect(page.all('li')[9]).to have_content("#{@merch_9.name} - #{@merch_9.total_items}")
+
+            expect(page.all('li')).to_not have_content("#{@merch_1.name}")
+            expect(page.all('li')).to_not have_content("#{@merch_8.name}")
+
+              # "Merchant Name 5 -  3090"
+              # "Merchant Name 6 -  2440"
+              # "Merchant Name 11 -  2000"
+              # "Merchant Name 4 -  1740"
+              # "Merchant Name 3 -  1400"
+              # "Merchant Name 12 -  1300"
+              # "Merchant Name 10 -  900"
+              # "Merchant Name 7 -  700"
+              # "Merchant Name 2 -  650"
+              # "Merchant Name 9 -  400"
+          end
+        end
       end
 
       it 'have sold the most items last month' do
@@ -200,4 +201,5 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
       end
     end
   end
+
 end
