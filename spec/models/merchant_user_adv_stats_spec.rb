@@ -200,13 +200,15 @@ RSpec.describe 'User - Merchant', type: :model do
       expect(User.top_merchants_by_items_sold_between(10, 31.days.ago, 61.days.ago)).to eq(previous_month_expected)
     end
 
-    xit '.top_ten_merchants_by_non_cancelled_orders_fulfilled_between(start_date, end_date)' do
-      current_month_expected = []
+    it '.top_merchants_by_non_cancelled_orders_between(merch_count, start_date, end_date)' do
+      current_month_expected = [@merch_5, @merch_4, @merch_6, @merch_3, @merch_2,
+                                @merch_1, @merch_11, @merch_12, @merch_10, @merch_7]
 
-      previous_month_expected = []
+      previous_month_expected = [@merch_4, @merch_5, @merch_2, @merch_1, @merch_6,
+                                @merch_3, @merch_7, @merch_8, @merch_9, @merch_11]
 
-      expect(User.top_ten_merchants_by_non_cancelled_orders_fulfilled_between(Time.now, 31.days.ago)).to eq(current_month_expected)
-      expect(User.top_ten_merchants_by_non_cancelled_orders_fulfilled_between(31.days.ago, 61.days.ago)).to eq(previous_month_expected)
+      expect(User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)).to eq(current_month_expected)
+      expect(User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)).to eq(previous_month_expected)
     end
   end
 
