@@ -57,7 +57,7 @@ RSpec.describe "merchant index workflow", type: :feature do
         login_as(@admin)
 
         visit merchants_path
-
+        
         within("#merchant-#{@merchant_1.id}") do
           click_button('Disable Merchant')
         end

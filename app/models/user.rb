@@ -156,4 +156,15 @@ class User < ApplicationRecord
         .order('order_count DESC')
         .limit(limit)
   end
+
+  def self.top_ten_merchants_by_items_sold_between(start_date, end_date)
+    self.joins(items: {order_items: :order})
+        .where.not("orders.status = ?", 3)
+        .where("order_items.created_at BETWEEN ? and ?", end_date, start_date)
+        .select("users.*, SUM(order_items.quantity) as total_items")
+        .group("users.id")
+        .order("total_items DESC")
+        .limit(10)
+  end
+
 end
