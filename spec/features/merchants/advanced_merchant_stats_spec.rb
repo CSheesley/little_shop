@@ -221,17 +221,6 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
             expect(page.all('li')).to_not have_content("#{@merch_1.name}")
             expect(page.all('li')).to_not have_content("#{@merch_8.name}")
-
-              # "Merchant Name 5 -  3090"
-              # "Merchant Name 6 -  2440"
-              # "Merchant Name 11 -  2000"
-              # "Merchant Name 4 -  1740"
-              # "Merchant Name 3 -  1400"
-              # "Merchant Name 12 -  1300"
-              # "Merchant Name 10 -  900"
-              # "Merchant Name 7 -  700"
-              # "Merchant Name 2 -  650"
-              # "Merchant Name 9 -  400"
           end
         end
       end
@@ -303,6 +292,10 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
   describe 'as a logged in user - when I visit the merchants index page' do
     context 'additional stats are shown for top five merchants' do
+
+
+
+      
       it 'who have fulfilled items fastest to my state' do
 
       end

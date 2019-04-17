@@ -210,6 +210,39 @@ RSpec.describe 'User - Merchant', type: :model do
       expect(User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)).to eq(current_month_expected)
       expect(User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)).to eq(previous_month_expected)
     end
+
+    xit '.fastest_fullfilled_by_state(state)' do
+      top_five_co = []
+      top_five_il = []
+
+
+      selected = User.where(state: "CO", order_items: {fulfilled: true} )
+                     .where.not(orders: {status: :cancelled})
+                     .joins(orders: :items)
+                     .pluck("order_items.id")
+
+      merchants = User.joins(items: :order_items)
+          .where("order_items.id": selected)
+          .group(:id)
+          .select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
+          .order("fulfillment_time ASC")
+          .limit(5)
+
+
+
+      # User.joins(orders: {order_items: :item}).where(state: "CO")
+      # selected_order_items = User.where(state: "CO").joins(orders: :items).where.not(orders: {status: :cancelled}).where(order_items: {fulfilled: true}).pluck("order_items.id")
+      #
+      # merchant = User.joins(items: :order_items).where("order_items.id": oitems).group(:id).select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time').order("fulfillment_time ASC").limit(5)
+
+
+      # group by merchant, from items
+      # need to get avg_fill time
+      binding.pry
+
+      expect(User.fastest_fullfilled_by_state(5, "CO")).to eq(top_five_co)
+      expect(User.fastest_fullfilled_by_state(5, "IL")).to eq(top_five_il)
+    end
   end
 
 end

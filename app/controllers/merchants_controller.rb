@@ -17,5 +17,7 @@ class MerchantsController < ApplicationController
 
     @merch_top_ten_by_orders_current_month = User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)
     @merch_top_ten_by_orders_previous_month = User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)
+
+    
   end
 end

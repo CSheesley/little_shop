@@ -157,22 +157,39 @@ class User < ApplicationRecord
         .limit(limit)
   end
 
+  def self.fastest_fullfilled_by_state(merch_count, state)
+    selected = User.where(state: state, order_items: {fulfilled: true} )
+                   .where.not(orders: {status: :cancelled})
+                   .joins(orders: :items)
+                   .pluck("order_items.id")
+
+    merchant = User.joins(items: :order_items)
+                   .where("order_items.id": selected)
+                   .group(:id)
+                   .select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
+                   .order("fulfillment_time ASC")
+                   .limit(merch_count)
+  end
+
+  def self.fastest_fullfilled_by_city(merch_count, city)
+  end
+
   def self.top_merchants_by_items_sold_between(merch_count, start_date, end_date)
     self.joins(items: {order_items: :order})
-        .where.not("orders.status = ?", 3)
+        .where.not(orders: {status: :cancelled})
         .where("order_items.created_at BETWEEN ? and ?", end_date, start_date)
         .select("users.*, SUM(order_items.quantity) as total_items")
-        .group("users.id")
+        .group(:id)
         .order("total_items DESC")
         .limit(merch_count)
   end
 
   def self.top_merchants_by_non_cancelled_orders_between(merch_count, start_date, end_date)
-    self.joins(items: {order_items: :order})
-        .where.not("orders.status = ?", 3)
-        .where("order_items.fulfilled = ? AND order_items.created_at BETWEEN ? and ?", 'true', end_date, start_date) 
+    self.joins(items: :orders)
+        .where.not(orders: {status: :cancelled})
+        .where("order_items.fulfilled = ? AND order_items.created_at BETWEEN ? and ?", 'true', end_date, start_date)
         .select("users.*, sum(order_items.quantity) as total_items, count(order_items.id) as total_orders")
-        .group("users.id")
+        .group(:id)
         .order("total_orders DESC, total_items DESC")
         .limit(merch_count)
   end
