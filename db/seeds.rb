@@ -17,13 +17,14 @@ zach = create(:user, name: "Zach", city: "Chicago", state:"IL")
 steph = create(:user, name: "Steph", city: "Wicker Park", state:"IL")
 
 admin = create(:admin)
-merchant_1 = create(:merchant)
-inactive_merchant_1 = create(:inactive_merchant)
-inactive_user_1 = create(:inactive_user)
 
 #merchants
 merch_1, merch_2, merch_3, merch_4, merch_5, merch_6, merch_7,
 merch_8, merch_9, merch_10, merch_11, merch_12 = create_list(:merchant, 12)
+
+merchant_1 = create(:merchant)
+inactive_merchant_1 = create(:inactive_merchant)
+inactive_user_1 = create(:inactive_user)
 
 #items
 item_1 = create(:item, user: merch_1)
@@ -46,13 +47,15 @@ order_101 = corey.orders.create(status: 'shipped', created_at: 30.days.ago, upda
 order_102 = corey.orders.create(status: 'shipped', created_at: 8.days.ago, updated_at: 2.days.ago)
 order_104 = corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 10.days.ago)
 
-order_201 = chels.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 8.days.ago)
+#originally ordered under Chels - changed for better server data differntiation
+order_201 = corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 8.days.ago)
+
 order_202 = chels.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
 order_203 = chels.orders.create(status: 'shipped', created_at: 6.days.ago, updated_at: 2.days.ago)
 
 order_301 = zach.orders.create(status: 'shipped', created_at: 5.days.ago, updated_at: 3.days.ago)
 order_302 = zach.orders.create(status: 'shipped', created_at: 6.days.ago, updated_at: 3.days.ago)
-order_304 = zach.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 7.days.ago)
+# order_304 = zach.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 7.days.ago)
 
 order_401 = steph.orders.create(status: 'shipped', created_at: 12.days.ago, updated_at: 5.days.ago)
 order_402 = steph.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
@@ -102,9 +105,9 @@ oi_cur_302_1 = create(:order_item, order_id: order_302.id, item_id: item_10.id, 
 oi_cur_302_2 = create(:order_item, order_id: order_302.id, item_id: item_11.id, quantity: 1000, fulfilled: true, created_at: order_302.created_at, updated_at: 4.days.ago)
 oi_cur_302_3 = create(:order_item, order_id: order_302.id, item_id: item_12.id, quantity: 650, fulfilled: true, created_at: order_302.created_at, updated_at: 5.days.ago)
 
-oi_cur_304_1 = create(:order_item, order_id: order_304.id, item_id: item_3.id, quantity: 450, fulfilled: true, created_at: order_304.created_at, updated_at: 8.days.ago)
-oi_cur_304_2 = create(:order_item, order_id: order_304.id, item_id: item_4.id, quantity: 100, fulfilled: true, created_at: order_304.created_at, updated_at: 7.days.ago)
-oi_cur_304_3 = create(:order_item, order_id: order_304.id, item_id: item_5.id, quantity: 550, fulfilled: true, created_at: order_304.created_at, updated_at: 9.days.ago)
+# oi_cur_304_1 = create(:order_item, order_id: order_304.id, item_id: item_3.id, quantity: 450, fulfilled: true, created_at: order_304.created_at, updated_at: 8.days.ago)
+# oi_cur_304_2 = create(:order_item, order_id: order_304.id, item_id: item_4.id, quantity: 100, fulfilled: true, created_at: order_304.created_at, updated_at: 7.days.ago)
+# oi_cur_304_3 = create(:order_item, order_id: order_304.id, item_id: item_5.id, quantity: 550, fulfilled: true, created_at: order_304.created_at, updated_at: 9.days.ago)
 
 oi_cur_401_1 = create(:order_item, order_id: order_401.id, item_id: item_1.id, quantity: 150, fulfilled: true, created_at: order_401.created_at, updated_at: 5.days.ago)
 oi_cur_401_2 = create(:order_item, order_id: order_401.id, item_id: item_2.id, quantity: 250, fulfilled: true, created_at: order_401.created_at, updated_at: 6.days.ago)

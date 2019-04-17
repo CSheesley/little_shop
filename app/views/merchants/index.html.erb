@@ -1,12 +1,13 @@
 <h1>Leaderboard Statistics</h1>
 
 <section id="leaderboard">
+
     <section id="top-ten-merchants">
       <h3>Top Ten Merchants</h3>
 
       <div id="by-items-sold-current-month">
         <h5>Items Sold Current Month</h5>
-        <h6>past 30 days</h6>
+        <h8>past 30 days</h8>
         <ol>
           <% @merch_top_ten_by_items_current_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_items %></li>
@@ -16,7 +17,7 @@
 
       <div id="by-items-sold-previous-month">
         <h5>Items Sold Previous Month</h5>
-        <h6>previous 31 - 60 days</h6>
+        <h8>previous 31 - 60 days</h8>
         <ol>
           <% @merch_top_ten_by_items_previous_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_items %></li>
@@ -26,7 +27,7 @@
 
       <div id="by-filled-orders-current-month">
         <h5>Orders Fulfilled Current Month</h5>
-        <h6>non cancelled orders</h6>
+        <h8>non-cancelled orders</h8>
         <ol>
           <% @merch_top_ten_by_orders_current_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_orders %></li>
@@ -36,17 +37,39 @@
 
       <div id="by-filled-orders-previous-month">
         <h5>Orders Fulfilled Previous Month</h5>
-        <h6>non cancelled orders</h6>
+        <h8>non-cancelled orders</h8>
         <ol>
           <% @merch_top_ten_by_orders_previous_month.each do |merchant| %>
           <li><%= merchant.name %> - <%= merchant.total_orders %></li>
           <% end %>
         </ol>
       </div>
-
     </section>
-</section>
 
+  <% if current_user %>
+    <section id="top-five-merchants">
+      <h3>Fastest Merchants</h3>
+
+      <div id="fastest-to-state">
+        <h5>To My State</h5>
+        <ol>
+          <% @merch_top_five_fastest_to_state.each do |merchant| %>
+          <li><%= merchant.name %> - <%= time_as_words(merchant.avg_fill_time) %></li>
+          <% end %>
+        </ol>
+      </div>
+
+      <div id="fastest-to-city">
+        <h5>To My City</h5>
+        <ol>
+          <% @merch_top_five_fastest_to_city .each do |merchant| %>
+          <li><%= merchant.name %> - <%= time_as_words(merchant.avg_fill_time) %></li>
+          <% end %>
+        </ol>
+      </div>
+    </section>
+  <% end %>
+</section>
 
 <%= tag.div class: "card" do %>
   <%= tag.section class: "statistics card-body float-left m-4" do %>
