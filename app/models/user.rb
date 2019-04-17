@@ -157,21 +157,29 @@ class User < ApplicationRecord
         .limit(limit)
   end
 
-  def self.fastest_fullfilled_by_state(merch_count, state)
-    selected = User.where(state: state, order_items: {fulfilled: true} )
+  def self.fastest_fullfilled_by_state(count, state)
+    selected = self.where(state: state, order_items: {fulfilled: true} )
                    .where.not(orders: {status: :cancelled})
                    .joins(orders: :items)
                    .pluck("order_items.id")
-
-    merchant = User.joins(items: :order_items)
-                   .where("order_items.id": selected)
-                   .group(:id)
-                   .select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
-                   .order("fulfillment_time ASC")
-                   .limit(merch_count)
+    fulfillment_time_calc_and_group(count, selected)
   end
 
-  def self.fastest_fullfilled_by_city(merch_count, city)
+  def self.fastest_fullfilled_by_city(count, city)
+    selected = self.where(city: city, order_items: {fulfilled: true} )
+                   .where.not(orders: {status: :cancelled})
+                   .joins(orders: :items)
+                   .pluck("order_items.id")
+    fulfillment_time_calc_and_group(count, selected)
+  end
+
+  def self.fulfillment_time_calc_and_group(count, selected)
+    self.joins(items: :order_items)
+        .where("order_items.id": selected)
+        .group(:id)
+        .select('users.*, avg(order_items.updated_at - order_items.created_at) AS avg_fill_time')
+        .order("avg_fill_time ASC")
+        .limit(count)
   end
 
   def self.top_merchants_by_items_sold_between(merch_count, start_date, end_date)
