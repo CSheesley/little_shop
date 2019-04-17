@@ -17,5 +17,10 @@ class MerchantsController < ApplicationController
 
     @merch_top_ten_by_orders_current_month = User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)
     @merch_top_ten_by_orders_previous_month = User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)
+
+    if current_user.present?
+      @merch_top_five_fastest_to_state = User.fastest_fullfilled_by_state(5, "#{current_user.state}")
+      @merch_top_five_fastest_to_city = User.fastest_fullfilled_by_city(5, "#{current_user.city}")
+    end
   end
 end

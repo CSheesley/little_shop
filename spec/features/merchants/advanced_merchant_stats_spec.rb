@@ -2,13 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Advanced Merchant Statistics', type: :feature do
   before :each do
-    # four users (two states, 4 cities)
-    # two states, two cities (limited data set)
-    # this month, last month (limited data sets)
-
-    # 12 merchants
-    # 12 items
-
     @corey = create(:user, name: "Corey", city: "Golden", state:"CO")
     @chels = create(:user, name: "Chelsea", city: "Lakewood", state:"CO")
     @zach = create(:user, name: "Zach", city: "Chicago", state:"IL")
@@ -39,7 +32,7 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @order_103 = @corey.orders.create(status: 'cancelled', created_at: 5.days.ago, updated_at: 3.days.ago)
     @order_104 = @corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 10.days.ago)
 
-    @order_201 = @chels.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 8.days.ago)
+    @order_201 = @corey.orders.create(status: 'shipped', created_at: 15.days.ago, updated_at: 8.days.ago)
     @order_202 = @chels.orders.create(status: 'shipped', created_at: 20.days.ago, updated_at: 10.days.ago)
     @order_203 = @chels.orders.create(status: 'shipped', created_at: 6.days.ago, updated_at: 2.days.ago)
 
@@ -114,7 +107,7 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
 ############################################################################################################
 
-    #Previous Month (30-60 days)
+#Previous Month (31-60 days)
     @order_501 = @corey.orders.create(status: 'shipped', created_at: 40.days.ago, updated_at: 25.days.ago)
     @order_502 = @corey.orders.create(status: 'shipped', created_at: 38.days.ago, updated_at: 28.days.ago)
     @order_503 = @corey.orders.create(status: 'cancelled', created_at: 31.days.ago, updated_at: 26.days.ago)
@@ -193,6 +186,8 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
     @oi_cur_703_2 = create(:order_item, order_id: @order_703.id, item_id: @item_11.id, quantity: 200, fulfilled: false, created_at: @order_703.created_at, updated_at: 42.days.ago)
     @oi_cur_703_3 = create(:order_item, order_id: @order_703.id, item_id: @item_12.id, quantity: 300, fulfilled: false, created_at: @order_703.created_at, updated_at: 44.days.ago)
 
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@corey)
+
     visit merchants_path
   end
 
@@ -221,17 +216,6 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
             expect(page.all('li')).to_not have_content("#{@merch_1.name}")
             expect(page.all('li')).to_not have_content("#{@merch_8.name}")
-
-              # "Merchant Name 5 -  3090"
-              # "Merchant Name 6 -  2440"
-              # "Merchant Name 11 -  2000"
-              # "Merchant Name 4 -  1740"
-              # "Merchant Name 3 -  1400"
-              # "Merchant Name 12 -  1300"
-              # "Merchant Name 10 -  900"
-              # "Merchant Name 7 -  700"
-              # "Merchant Name 2 -  650"
-              # "Merchant Name 9 -  400"
           end
         end
       end
@@ -303,14 +287,32 @@ RSpec.describe 'Advanced Merchant Statistics', type: :feature do
 
   describe 'as a logged in user - when I visit the merchants index page' do
     context 'additional stats are shown for top five merchants' do
+
       it 'who have fulfilled items fastest to my state' do
 
+        within "#top-five-merchants" do
+          within "#fastest-to-state" do
+            expect(page.all('li')[0]).to have_content("#{@merch_4.name}")
+            expect(page.all('li')[1]).to have_content("#{@merch_6.name}")
+            expect(page.all('li')[2]).to have_content("#{@merch_5.name}")
+            expect(page.all('li')[3]).to have_content("#{@merch_7.name}")
+            expect(page.all('li')[4]).to have_content("#{@merch_1.name}")
+          end
+        end
       end
 
       it 'who have fulfilled items fastest to my city' do
-
+        save_and_open_page
+        within "#top-five-merchants" do
+          within "#fastest-to-city" do
+            expect(page.all('li')[0]).to have_content("#{@merch_6.name}")
+            expect(page.all('li')[1]).to have_content("#{@merch_4.name}")
+            expect(page.all('li')[2]).to have_content("#{@merch_5.name}")
+            expect(page.all('li')[3]).to have_content("#{@merch_7.name}")
+            expect(page.all('li')[4]).to have_content("#{@merch_2.name}")
+          end
+        end
       end
     end
   end
-
 end

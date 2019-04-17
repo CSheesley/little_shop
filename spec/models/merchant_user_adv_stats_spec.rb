@@ -177,14 +177,14 @@ RSpec.describe 'User - Merchant', type: :model do
     @oi_prev_803_1 = create(:order_item, order_id: @order_803.id, item_id: @item_4.id, quantity: 500, fulfilled: true, created_at: @order_803.created_at, updated_at: 55.days.ago)
 
     #cancelled (order_503)
-    @oi_cur_503_1 = create(:order_item, order_id: @order_503.id, item_id: @item_4.id, quantity: 100, fulfilled: false, created_at: @order_503.created_at, updated_at: 26.days.ago)
-    @oi_cur_503_2 = create(:order_item, order_id: @order_503.id, item_id: @item_5.id, quantity: 200, fulfilled: false, created_at: @order_503.created_at, updated_at: 29.days.ago)
-    @oi_cur_503_3 = create(:order_item, order_id: @order_503.id, item_id: @item_6.id, quantity: 300, fulfilled: false, created_at: @order_503.created_at, updated_at: 30.days.ago)
+    @oi_prev_503_1 = create(:order_item, order_id: @order_503.id, item_id: @item_4.id, quantity: 100, fulfilled: false, created_at: @order_503.created_at, updated_at: 26.days.ago)
+    @oi_prev_503_2 = create(:order_item, order_id: @order_503.id, item_id: @item_5.id, quantity: 200, fulfilled: false, created_at: @order_503.created_at, updated_at: 29.days.ago)
+    @oi_prev_503_3 = create(:order_item, order_id: @order_503.id, item_id: @item_6.id, quantity: 300, fulfilled: false, created_at: @order_503.created_at, updated_at: 30.days.ago)
 
     #cancelled (order_703)
-    @oi_cur_703_1 = create(:order_item, order_id: @order_703.id, item_id: @item_10.id, quantity: 100, fulfilled: false, created_at: @order_703.created_at, updated_at: 40.days.ago)
-    @oi_cur_703_2 = create(:order_item, order_id: @order_703.id, item_id: @item_11.id, quantity: 200, fulfilled: false, created_at: @order_703.created_at, updated_at: 42.days.ago)
-    @oi_cur_703_3 = create(:order_item, order_id: @order_703.id, item_id: @item_12.id, quantity: 300, fulfilled: false, created_at: @order_703.created_at, updated_at: 44.days.ago)
+    @oi_prev_703_1 = create(:order_item, order_id: @order_703.id, item_id: @item_10.id, quantity: 100, fulfilled: false, created_at: @order_703.created_at, updated_at: 40.days.ago)
+    @oi_prev_703_2 = create(:order_item, order_id: @order_703.id, item_id: @item_11.id, quantity: 200, fulfilled: false, created_at: @order_703.created_at, updated_at: 42.days.ago)
+    @oi_prev_703_3 = create(:order_item, order_id: @order_703.id, item_id: @item_12.id, quantity: 300, fulfilled: false, created_at: @order_703.created_at, updated_at: 44.days.ago)
   end
 
   describe 'class methods' do
@@ -210,6 +210,21 @@ RSpec.describe 'User - Merchant', type: :model do
       expect(User.top_merchants_by_non_cancelled_orders_between(10, Time.now, 31.days.ago)).to eq(current_month_expected)
       expect(User.top_merchants_by_non_cancelled_orders_between(10, 31.days.ago, 61.days.ago)).to eq(previous_month_expected)
     end
-  end
 
+    it '.fastest_fullfilled_by_state(count, state)' do
+      fastest_to_co = [@merch_4, @merch_6, @merch_5, @merch_7, @merch_1]
+      fastest_il = [@merch_5, @merch_4, @merch_9, @merch_3, @merch_7]
+
+      expect(User.fastest_fullfilled_by_state(5, "CO")).to eq(fastest_to_co)
+      expect(User.fastest_fullfilled_by_state(5, "IL")).to eq(fastest_il)
+    end
+
+    it '.fastest_fullfilled_by_city(count, city)' do
+      fastest_to_golden = [@merch_6, @merch_4, @merch_5, @merch_7, @merch_2]
+      fastest_to_lakewood = [@merch_4, @merch_5, @merch_3, @merch_6, @merch_1]
+
+      expect(User.fastest_fullfilled_by_city(5, "Golden")).to eq(fastest_to_golden)
+      expect(User.fastest_fullfilled_by_city(5, "Lakewood")).to eq(fastest_to_lakewood)
+    end
+  end
 end
