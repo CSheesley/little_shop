@@ -12,9 +12,9 @@ User.destroy_all
 # Corey's Seed Data
 
 corey = create(:user, name: "Corey", city: "Golden", state:"CO", email: "corey@email.com", password: "password")
-chels = create(:user, name: "Chelsea", city: "Lakewood", state:"CO")
-zach = create(:user, name: "Zach", city: "Chicago", state:"IL")
-steph = create(:user, name: "Steph", city: "Wicker Park", state:"IL")
+chels = create(:user, name: "Chelsea", city: "Lakewood", state:"CO", email: "chesl@email.com", password: "password"))
+zach = create(:user, name: "Zach", city: "Chicago", state:"IL", email: "zach@email.com", password: "password")
+steph = create(:user, name: "Steph", city: "Wicker Park", state:"IL", email: "steph@email.com", password: "password"))
 
 admin = create(:admin)
 

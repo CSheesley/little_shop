@@ -51,7 +51,7 @@
       <h3>Fastest Merchants</h3>
 
       <div id="fastest-to-state">
-        <h5>To My State</h5>
+        <h5>To My State - <%= current_user.state %></h5>
         <ol>
           <% @merch_top_five_fastest_to_state.each do |merchant| %>
           <li><%= merchant.name %> - <%= time_as_words(merchant.avg_fill_time) %></li>
@@ -60,7 +60,7 @@
       </div>
 
       <div id="fastest-to-city">
-        <h5>To My City</h5>
+        <h5>To My City - <%= current_user.city %></h5>
         <ol>
           <% @merch_top_five_fastest_to_city .each do |merchant| %>
           <li><%= merchant.name %> - <%= time_as_words(merchant.avg_fill_time) %></li>
